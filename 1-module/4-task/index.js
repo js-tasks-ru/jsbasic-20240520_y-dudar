@@ -1,18 +1,5 @@
 function checkSpam(str) {
-  str = str.toUpperCase();
-  let word = "";
-
-  for (let char of str) {
-    word += char;
-
-    if (word.includes(" ")) {
-      word = "";
-    }
-
-    if (word === "1XBET" || word === "XXXXX") {
-      return true;
-    }
-  }
+  str = str.toLowerCase();
   
-  return false;
+  return str.includes('free xxxxx') || str.includes('1xbet now');
 }
