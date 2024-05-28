@@ -1,27 +1,34 @@
 // не совсем понял как я это сделал)
 
 let calculator = {
-  read: read,
-  sum: sum,
-  mul: mul,
+
+  read(a, b) {
+    this.a = a;
+    this.b = b;
+  },
+
+  sum() {
+    return this.a + this.b;
+  },
+  
+  mul() {
+    return this.a * this.b;
+  }
 };
 
-function read(a, b) {
-  calculator.a = a;
-  calculator.b = b;
-}
+// function read(a, b) {
+//   this.a = a;
+//   this.b = b;
+// }
 
-function sum() {
-  return this.a + this.b;
-}
+// function sum() {
+//   return this.a + this.b;
+// }
 
-function mul() {
-  return this.a * this.b;
-}
-
-calculator.read(3, 5);
-calculator.sum();
-calculator.mul();
+// function mul() {
+//   return this.a * this.b;
+// }
+calculator.read(1, 1);
 
 // НЕ УДАЛЯТЬ СТРОКУ, НУЖНА ДЛЯ ПРОВЕРКИ
 window.calculator = calculator; // делает ваш калькулятор доступным глобально
