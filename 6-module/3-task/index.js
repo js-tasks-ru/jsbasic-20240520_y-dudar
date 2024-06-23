@@ -26,7 +26,9 @@ export default class Carousel {
   }
 
   #templateCarouselSlides() {
-    return this.slides.map(({ price, name, image, id }) => `
+    return this.slides
+      .map(
+        ({ price, name, image, id }) => `
       <div class="carousel__slide" data-id="${id}">
         <img src="/assets/images/carousel/${image}" class="carousel__img" alt="slide">
         <div class="carousel__caption">
@@ -37,7 +39,9 @@ export default class Carousel {
           </button>
         </div>
       </div>
-    `).join('');
+    `
+      )
+      .join("");
   }
 
   #slideSwitch() {
@@ -45,47 +49,40 @@ export default class Carousel {
     const arrowRight = carouselTemplate.querySelector(".carousel__arrow_right");
     const arrowLeft = carouselTemplate.querySelector(".carousel__arrow_left");
     const carouselMove = carouselTemplate.querySelector(".carousel__inner");
-    const slides = carouselTemplate.querySelectorAll(".carousel__img");
 
-    let slideWidth = 0;
+    let currentSlide = 0;
 
-    slides[0].addEventListener('load', () => {
-      slideWidth = slides[0].offsetWidth;
+    const arrowUpdates = () => {
+      arrowLeft.style.display = currentSlide === 0 ? "none" : "";
+      arrowRight.style.display =
+        currentSlide === this.slides.length - 1 ? "none" : "";
+    };
 
-      let currentSlide = 0;
+    arrowUpdates();
 
-      const arrowUpdates = () => {
-        arrowLeft.style.display = (currentSlide === 0) ? "none" : "";
-        arrowRight.style.display = (currentSlide === this.slides.length - 1) ? "none" : "";
-      };
-
+    carouselTemplate.addEventListener("click", (event) => {
+      const arrowRightClicked = event.target.closest(".carousel__arrow_right");
+      const arrowLeftClicked = event.target.closest(".carousel__arrow_left");
+      if (arrowRightClicked && currentSlide < this.slides.length - 1) {
+        currentSlide++;
+      } else if (arrowLeftClicked && currentSlide > 0) {
+        currentSlide--;
+      }
+      carouselMove.style.transform = `translateX(-${carouselMove.offsetWidth * currentSlide}px)`;
       arrowUpdates();
-
-      carouselTemplate.addEventListener("click", (event) => {
-        const arrowRightClicked = event.target.closest(".carousel__arrow_right");
-        const arrowLeftClicked = event.target.closest(".carousel__arrow_left");
-        if (arrowRightClicked && currentSlide < this.slides.length - 1) {
-          currentSlide++;
-        } else if (arrowLeftClicked && currentSlide > 0) {
-          currentSlide--;
-        }
-        carouselMove.style.transform = `translateX(-${slideWidth * currentSlide}px)`;
-        arrowUpdates();
-      });
     });
   }
 
-
   #render() {
     this.elem = createElement(this.#template());
-    const slides = this.elem.querySelectorAll('.carousel__slide');
-    slides.forEach(slide => {
-      const addButton = slide.querySelector('.carousel__button');
+    const slides = this.elem.querySelectorAll(".carousel__slide");
+    slides.forEach((slide) => {
+      const addButton = slide.querySelector(".carousel__button");
       addButton.addEventListener("click", () => {
         const productId = slide.dataset.id;
         const productAdd = new CustomEvent("product-add", {
           detail: productId,
-          bubbles: true
+          bubbles: true,
         });
         this.elem.dispatchEvent(productAdd);
       });
