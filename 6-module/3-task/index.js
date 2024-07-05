@@ -2,7 +2,7 @@ import createElement from "../../assets/lib/create-element.js";
 
 export default class Carousel {
   elem = null;
-
+  
   constructor(slides) {
     this.slides = slides;
     this.elem = this.#render();
